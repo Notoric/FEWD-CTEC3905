@@ -16,7 +16,7 @@ body {
 main {
   width: 100vw;
   height: 100vh;
-  background-image: url(/assets/photos/sunset-5928907-lizzymay.jpg);
+  background-image: url(/assets/photos/winter-2080070.jpg);
   background-size: cover;
   overflow: hidden;
 }
@@ -101,9 +101,11 @@ h1#title2 {
     grid-column: right;
     width: 50vw;
     height: 100vh;
-    box-shadow: inset -10px 0 1vw 10vw black;
-    border-left: 10px black solid;
-    overflow: hidden;
+    background-image: url(/assets/photos/ai-generated-8432825-dgstudios.png);
+    filter: saturate(50%) ;
+    
+    background-size: cover;
+    mix-blend-mode: darken;
   }
 
   h1 {
