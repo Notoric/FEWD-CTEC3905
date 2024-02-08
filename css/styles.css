@@ -101,7 +101,7 @@ h1#title2 {
     grid-column: right;
     width: 50vw;
     height: 100vh;
-    box-shadow: inset -10px 0 2vw 10vw black;
+    box-shadow: inset -10px 0 1vw 10vw black;
     border-left: 10px black solid;
     overflow: hidden;
   }
