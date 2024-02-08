@@ -3,17 +3,72 @@
 /* applies to screens smaller than 500px (first breakpoint) */
 /* and above unless overwritten below */
 
+:root {
+  --background-color: #0d0d0d;
+}
+
 body {
   background: #fcc;
+  margin: 0;
+  padding: 0;
 } 
 
+main {
+  width: 100vw;
+  height: 100vh;
+  background-image: url(/assets/photos/sunset-5928907-lizzymay.jpg);
+  background-size: cover;
+  overflow: hidden;
+  isolation: isolate;
+}
 
+.textWindow {
+  margin: 0;
+  padding: 0;
+  width: auto;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  background-color: black;
+  mix-blend-mode: multiply;
+}
+
+h1 {
+  font-size: 18vw;
+  color: white;
+  margin: 0;
+  padding: 0;
+  padding-left: 2vw;
+  padding-top: 10vh;
+  font-family: 'Outfit', sans-serif;
+}
+
+h1#title2 {
+  padding-left: 8vw;
+  padding-top: 0;
+}
 
 /* TABLET STYLES */
 
 @media screen and (min-width: 500px) {
 
   /* applies to screens wider than 499px */
+  .textWindow {
+    justify-content: center;
+  }
+
+  h1 {
+    font-size: 20vw;
+    padding-left: 2vw;
+    padding-top: 0vh;
+  }
+
+  h1#title2 {
+    padding-left: 10vw;
+    padding-top: 0;
+  }
   
   body {
     background: #cfc;
@@ -31,4 +86,33 @@ body {
   body {
     background: #ccf;
   } 
+
+  main {
+    display: grid;
+    grid-template-areas: "left right";
+  }
+
+  .textWindow {
+    grid-column: left;
+    width: 50vw;
+    height: 100vh;
+  }
+
+  .extraWindow {
+    grid-column: right;
+    width: 50vw;
+    height: 100vh;
+    box-shadow: inset 0 0 2vw 10vw black;
+  }
+
+  h1 {
+    font-size: 12vw;
+    padding-left: 2vw;
+    padding-top: 0vh;
+  }
+
+  h1#title2 {
+    padding-left: 8vw;
+    padding-top: 0;
+  }
 }

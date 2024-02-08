@@ -16,3 +16,7 @@ The `css/styles.css` file contains a basic starting template for a responsive pa
 ## js/scripts.js
 
 The `js/scripts.js` file contains a simple console.log statement to confirm that it is being executed.
+
+## assets/photos
+
+All images inside `assets/photos` folder are from https://pixabay.com and used under the licence outlined here https://pixabay.com/service/terms/
