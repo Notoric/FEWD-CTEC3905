@@ -18,12 +18,82 @@ function changeBackground(R, G, B) {
         [60, 90, 20]
     ]
     
+    let closestDistance = 500;
+    let closest = 0;
+
+    for (let i = 0; i < colours.length; i++) {
+        distance = Math.abs(R - colours[i][0]) + 
+                   Math.abs(G - colours[i][1]) + 
+                   Math.abs(B - colours[i][2]);
+
+        if (distance < closestDistance) {
+            closestDistance = distance;
+            closest = i;
+        }
+    }
+
+    switch (closest) {
+        case 0:
+            transitionFog();
+            break;
+        case 1:
+            transitionSunset();
+            break;
+        case 2:
+            transitionSunsetPurple();
+            break;
+        case 3:
+            transitionSunsetYellow();
+            break;
+        case 4:
+            transitionRoadOrange();
+            break;
+        case 5:
+            transitionRoadRed();
+            break;
+        case 6:
+            transitionClouds();
+            break;
+        case 7:
+            transitionForest();
+            break;
+        case 8:
+            transitionAvenue();
+            break;
+        case 9:
+            transitionMountain();
+            break;
+        case 10:
+            transitionGalaxy();
+            break;
+        case 11:
+            transitionThunderstorm();
+            break;
+        case 12:
+            transitionAurora();
+            break;
+        case 13:
+            transitionLake();
+            break;
+        default:
+            transitionFog();
+            break;
+    }
 }
+
+bgColour.addEventListener("input", () => {
+    const R = parseInt(bgColour.value.substring(1, 3), 16);
+    const G = parseInt(bgColour.value.substring(3, 5), 16);
+    const B = parseInt(bgColour.value.substring(5, 7), 16);
+    changeBackground(R, G, B);
+});
 
 function transitionBackground(newUrl, blackwhite) {
     const background = document.getElementById("background");
     const transitionLayer = document.getElementById("background-transition");
     const title = document.getElementById("titleBanner");
+
+    transitionLayer.removeEventListener("transitionend", () => {});
 
     title.className = blackwhite;
 
@@ -31,6 +101,9 @@ function transitionBackground(newUrl, blackwhite) {
     transitionLayer.style.display = "block";
     transitionLayer.style.opacity = "0";
 
+    setTimeout(() => {
+        transitionLayer.style.opacity = '0'; 
+    }, 10);
     setTimeout(() => {
         transitionLayer.style.opacity = '1'; 
     }, 10);

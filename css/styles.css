@@ -57,7 +57,7 @@ body {
   height: 100%;
   z-index: -1;
   opacity: 0;
-  transition: opacity 1s ease-in-out;
+  transition: opacity 1s;
 }
 
 h1 {
@@ -90,6 +90,10 @@ h1 {
   right: 0;
   margin: 10px;
   align-items: center;
+
+  padding: 10px;
+  background-color: #ffffff50;
+  border-radius: 10px;
 }
 
 #colorSelector input {
