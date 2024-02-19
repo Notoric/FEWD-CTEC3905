@@ -3,50 +3,101 @@
 /* applies to screens smaller than 500px (first breakpoint) */
 /* and above unless overwritten below */
 
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@600&display=swap');
+
 :root {
-  --background-color: #0d0d0d;
+  
 }
 
 body {
-  background: #fcc;
+  font-family: 'Outfit', sans-serif;
   margin: 0;
   padding: 0;
-} 
-
-main {
-  width: 100vw;
-  height: 100vh;
-  background-image: url(/assets/photos/winter-2080070.jpg);
-  background-size: cover;
-  overflow: hidden;
+  box-sizing: border-box;
 }
 
-.textWindow {
-  margin: 0;
-  padding: 0;
-  width: auto;
-  height: 100%;
+@keyframes fadeImage {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
 
+#textWindow {
+  width: 100vw;
+  height: 100vh;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-size: cover;
+  transition: opacity 1s forwards; /*transition does not work for images*/
+  position: relative;
+}
 
-  background-color: black;
-  mix-blend-mode: multiply;
+#textWindow #background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+}
+
+#textWindow #background-transition {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
 }
 
 h1 {
-  font-size: 18vw;
-  color: white;
-  margin: 0;
-  padding: 0;
-  padding-left: 2vw;
-  padding-top: 10vh;
-  font-family: 'Outfit', sans-serif;
+  font-size: 10vw;
+  text-align: center;
 }
 
-h1#title2 {
-  padding-left: 8vw;
-  padding-top: 0;
+#titleBanner {
+  padding-left: 5%;
+  padding-right: 5%;
+  transition: color 1s, background-color 1s;
+}
+
+.black {
+  background-color: #000;
+  color: #fff;
+  mix-blend-mode: multiply;
+}
+
+.white {
+  background-color: #fff;
+  color: #000;
+  mix-blend-mode: lighten;
+}
+
+#colorSelector {
+  display: flex;
+  position: fixed;
+  top: 0;
+  right: 0;
+  margin: 10px;
+  align-items: center;
+}
+
+#colorSelector input {
+  margin-left: 10px;
+}
+
+#colorSelector label {
+  font-size: 1.5em;
 }
 
 /* TABLET STYLES */
@@ -54,24 +105,7 @@ h1#title2 {
 @media screen and (min-width: 500px) {
 
   /* applies to screens wider than 499px */
-  .textWindow {
-    justify-content: center;
-  }
 
-  h1 {
-    font-size: 20vw;
-    padding-left: 2vw;
-    padding-top: 0vh;
-  }
-
-  h1#title2 {
-    padding-left: 10vw;
-    padding-top: 0;
-  }
-  
-  body {
-    background: #cfc;
-  } 
 }
 
 
@@ -82,40 +116,4 @@ h1#title2 {
 
   /* applies to screens wider than 999px */
 
-  body {
-    background: #ccf;
-  } 
-
-  main {
-    display: grid;
-    grid-template-areas: "left right";
-  }
-
-  .textWindow {
-    grid-column: left;
-    width: 50vw;
-    height: 100vh;
-  }
-
-  .extraWindow {
-    grid-column: right;
-    width: 50vw;
-    height: 100vh;
-    background-image: url(/assets/photos/ai-generated-8432825-dgstudios.png);
-    filter: saturate(50%) ;
-    
-    background-size: cover;
-    mix-blend-mode: darken;
-  }
-
-  h1 {
-    font-size: 12vw;
-    padding-left: 2vw;
-    padding-top: 0vh;
-  }
-
-  h1#title2 {
-    padding-left: 8vw;
-    padding-top: 0;
-  }
 }
