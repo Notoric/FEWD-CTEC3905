@@ -28,7 +28,7 @@ body {
   }
 }
 
-#textWindow {
+#landing {
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -39,7 +39,7 @@ body {
   position: relative;
 }
 
-#textWindow #background {
+#landing #background {
   position: absolute;
   top: 0;
   left: 0;
@@ -48,7 +48,7 @@ body {
   z-index: -2;
 }
 
-#textWindow #background-transition {
+#landing #background-transition {
   display: none;
   position: absolute;
   top: 0;
@@ -85,7 +85,7 @@ h1 {
 
 #colorSelector {
   display: flex;
-  position: fixed;
+  position: absolute;
   top: 0;
   right: 0;
   margin: 10px;
@@ -102,6 +102,91 @@ h1 {
 
 #colorSelector label {
   font-size: 1.5em;
+}
+
+#carousel {
+  height: 910px;
+  background-color: #0d0d0d;
+  position: relative;
+  display: flex;
+}
+
+#carousel-container {
+  display: flex;
+  width: 100%;
+  padding: 50px;
+}
+
+.carousel-item {
+  position: relative;
+  display:block;
+  height: 800px;
+  width: 150px;
+  min-width: 150px;
+  margin-inline: 12px;
+  border-radius: 81px;
+  border: 5px solid black;
+  overflow: hidden;
+
+  transition: width 1s ease;
+}
+
+.carousel-item .carousel-id {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  transform: translate(10px, 0);
+  width: 120px;
+  height: 120px;
+  background-color: #202020;
+  border-radius: 70px;
+  text-align: center;
+  line-height: 120px;
+  font-size: 100px;
+  margin: 0;
+  margin-bottom: 15px;
+  color: white;
+  border: 5px solid black;
+  text-shadow: black 5px 5px 5px;
+}
+
+.carousel-item .carousel-title {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  transform: translate(180px, -50px);
+  color: white;
+  font-size: 50px;
+  margin: 0;
+  text-shadow: black 3px 3px 3px;
+}
+
+#carousel-container .active {
+  width:100%;
+}
+
+#carousel-container #carousel-1 {
+  background-image: url("/assets/photos/space-4678686_1920.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+#carousel-container #carousel-2 {
+  background-image: url("/assets/photos/universe-1622107_1920.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+#carousel-container #carousel-3 {
+  background-image: url("/assets/photos/science-fiction-2907434_1920.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+#carousel-container #carousel-4 {
+  background-image: url("/assets/photos/fantasy-2770468_1920.jpg");
+  background-size: cover;
+  background-position: center;
 }
 
 /* TABLET STYLES */

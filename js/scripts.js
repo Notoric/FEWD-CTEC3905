@@ -1,5 +1,7 @@
 console.log("hello");
 
+// COLOUR PICKER BACKGROUND
+
 function changeBackground(R, G, B) {
     const colours = [
         [255, 255, 255],
@@ -171,4 +173,36 @@ function transitionLake() {
     transitionBackground("assets/photos/hintersee-3601004.jpg", "white");
 }
 
+// ACCORDIAN IMAGES
+
+function carouselExpand(i) {
+    const carousel = document.getElementById(`carousel-container`);
+    const carouselItems = carousel.getElementsByClassName("carousel-item");
+
+    i = i - 1;
+
+    if (i < carouselItems.length) {
+        for (let j = 0; j < carouselItems.length; j++) {
+            carouselItems[j].className = "carousel-item";
+        }
+        carouselItems[i].className = "carousel-item active";
+    }
+}
+
+function initCarousel() {
+    const carousel = document.getElementById(`carousel-container`);
+    const carouselItems = carousel.getElementsByClassName("carousel-item");
+
+    for (let i = 0; i < carouselItems.length; i++) {
+        carouselItems[i].addEventListener("mouseover", () => {
+            carouselExpand(i + 1);
+        });
+    }
+
+}
+
+// INITIALIZATION
+
 transitionBackground("assets/photos/fog-8519076-nordseher.jpg", "black")
+initCarousel();
+carouselExpand(1);
