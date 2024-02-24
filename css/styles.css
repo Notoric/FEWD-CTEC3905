@@ -66,6 +66,7 @@ body {
 h1 {
   font-size: 10vw;
   text-align: center;
+  user-select: none;
 }
 
 #titleBanner {
@@ -154,6 +155,7 @@ h1 {
   color: white;
   border: 5px solid black;
   text-shadow: black 5px 5px 5px;
+  user-select: none;
 }
 
 .carousel-item .carousel-title {
@@ -165,6 +167,7 @@ h1 {
   font-size: 50px;
   margin: 0;
   text-shadow: black 3px 3px 3px;
+  width: 500px;
 }
 
 #carousel-container .active {
