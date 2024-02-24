@@ -127,11 +127,11 @@ h1 {
 .carousel-item {
   position: relative;
   display:block;
-  height: 150px;
+  height: 100px;
   width: 96%;
-  min-height: 150px;
+  min-height: 100px;
   margin: 12px;
-  border-radius: 81px;
+  border-radius: 55px;
   border: 5px solid black;
   overflow: hidden;
 
@@ -143,13 +143,13 @@ h1 {
   bottom: 0;
   left: 0;
   transform: translate(10px, 5px);
-  width: 120px;
-  height: 120px;
+  width: 70px;
+  height: 70px;
   background-color: #202020;
-  border-radius: 70px;
+  border-radius: 40px;
   text-align: center;
-  line-height: 120px;
-  font-size: 100px;
+  line-height: 70px;
+  font-size: 50px;
   margin: 0;
   margin-bottom: 15px;
   color: white;
@@ -162,9 +162,9 @@ h1 {
   position: absolute;
   bottom: 0;
   left: 0;
-  transform: translate(180px, -50px);
+  transform: translate(100px, -35px);
   color: white;
-  font-size: 50px;
+  font-size: 25px;
   margin: 0;
   text-shadow: black 3px 3px 3px;
   width: 500px;
@@ -227,11 +227,25 @@ h1 {
     height: 800px;
     width: 150px;
     min-width: 150px;
+    border-radius: 80px;
+  }
+
+  .carousel-item .carousel-id {
+    width: 120px;
+    height: 120px;
+    line-height: 120px;
+    font-size: 100px;
+    border-radius: 65px;
   }
 
   #carousel-container .active {
     width:100%;
     height: 800px;
+  }
+
+  .carousel-item .carousel-title {
+    transform: translate(180px, -50px);
+    font-size: 50px;
   }
 
 }
