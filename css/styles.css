@@ -128,7 +128,7 @@ h1 {
   position: relative;
   display:block;
   height: 100px;
-  width: 96%;
+  width: calc(100% - 34px);
   min-height: 100px;
   margin: 12px;
   border-radius: 55px;
