@@ -88,6 +88,7 @@ bgColour.addEventListener("input", () => {
     const G = parseInt(bgColour.value.substring(3, 5), 16);
     const B = parseInt(bgColour.value.substring(5, 7), 16);
     changeBackground(R, G, B);
+    localStorage.setItem("bgColour", bgColour.value);
 });
 
 function transitionBackground(newUrl, blackwhite) {
@@ -202,7 +203,13 @@ function initCarousel() {
 }
 
 // INITIALIZATION
-
-transitionBackground("assets/photos/fog-8519076-nordseher.jpg", "black")
+// Set background colour to last saved value
+const bgColor = document.getElementById("bgColour");
+bgColor.value = localStorage.getItem("bgColour") || "#ffffff";
+const initR = parseInt(bgColour.value.substring(1, 3), 16);
+const initG = parseInt(bgColour.value.substring(3, 5), 16);
+const initB = parseInt(bgColour.value.substring(5, 7), 16);
+changeBackground(initR, initG, initB);
+// Initialize carousel
 initCarousel();
 carouselExpand(1);
