@@ -140,6 +140,10 @@ h2 {
   justify-content: center;
 }
 
+#features p {
+  text-align: center;
+}
+
 /* CAROUSEL STYLES */
 
 #carousel {
