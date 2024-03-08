@@ -3,15 +3,17 @@
 /* applies to screens smaller than 500px (first breakpoint) */
 /* and above unless overwritten below */
 
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..600&display=swap');
 
 :root {
-  
+  --bgColor: #ffffff;
 }
 
 
 body {
   font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  font-size: 1.5em;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -72,7 +74,11 @@ h1 {
 #titleBanner {
   padding-left: 5%;
   padding-right: 5%;
-  transition: color 1s, background-color 1s;
+  transition: color 1s, background-color 1s, border-radius 0.5s ease;
+}
+
+#titleBanner:hover {
+  border-radius: 1em;
 }
 
 .black {
@@ -108,6 +114,19 @@ h1 {
   font-size: 1.5em;
 }
 
+/* BELOW LANDING STYLES */
+
+#below-landing {
+  background-color: #0d0d0d;
+  overflow: auto;
+  color: white;
+  padding: 50px;
+}
+
+p {
+  font-weight: 200;
+}
+
 /* CAROUSEL STYLES */
 
 #carousel {
@@ -121,7 +140,7 @@ h1 {
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 50px;
+  padding: 50px 0px;
 }
 
 .carousel-item {
@@ -150,6 +169,7 @@ h1 {
   text-align: center;
   line-height: 70px;
   font-size: 50px;
+  font-weight: 400;
   margin: 0;
   margin-bottom: 15px;
   color: white;
@@ -165,6 +185,7 @@ h1 {
   transform: translate(100px, -35px);
   color: white;
   font-size: 25px;
+  font-weight: 550;
   margin: 0;
   text-shadow: black 3px 3px 3px;
   width: 500px;
@@ -246,6 +267,18 @@ h1 {
   .carousel-item .carousel-title {
     transform: translate(180px, -50px);
     font-size: 50px;
+  }
+
+  .content-column {
+    max-width: 1300px;
+    margin: auto;
+  }
+
+  section {
+    padding: 0px 50px;
+    border-style: solid;
+    border-width: 1px;
+    border-image : linear-gradient(to bottom, #fff0 0%, #fff0 10%, var(--bgColor) 50%, #fff0 90%, #fff0 100%) 1;
   }
 
 }
