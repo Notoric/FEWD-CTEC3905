@@ -117,7 +117,7 @@ h1 {
 /* BELOW LANDING STYLES */
 
 #below-landing {
-  background-color: #0d0d0d;
+  background-color: #101010;
   overflow: auto;
   color: white;
   padding: 50px;
@@ -127,11 +127,18 @@ p {
   font-weight: 200;
 }
 
+#features {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 /* CAROUSEL STYLES */
 
 #carousel {
   height: 100vh;
-  background-color: #0d0d0d;
+  background-color: #101010;
   position: relative;
   display: flex;
 }
@@ -166,13 +173,8 @@ p {
   height: 70px;
   background-color: #202020;
   border-radius: 40px;
-  text-align: center;
-  line-height: 70px;
-  font-size: 50px;
-  font-weight: 400;
   margin: 0;
   margin-bottom: 15px;
-  color: white;
   border: 5px solid black;
   text-shadow: black 5px 5px 5px;
   user-select: none;
@@ -187,7 +189,7 @@ p {
   font-size: 25px;
   font-weight: 550;
   margin: 0;
-  text-shadow: black 3px 3px 3px;
+  text-shadow: rgb(0, 0, 0) 3px 3px 3px;
   width: 500px;
 }
 
@@ -196,25 +198,19 @@ p {
 }
 
 #carousel-container #carousel-1 {
-  background-image: url("/assets/photos/space-4678686_1920.jpg");
+  background-image: linear-gradient(to top, #0008, #0000), url("/assets/photos/code-1839406_1920.jpg");
   background-size: cover;
   background-position: center;
 }
 
 #carousel-container #carousel-2 {
-  background-image: url("/assets/photos/universe-1622107_1920.jpg");
+  background-image: linear-gradient(to top, #000a, #0000), url("/assets/photos/software-3682509_1920.jpg");
   background-size: cover;
   background-position: center;
 }
 
 #carousel-container #carousel-3 {
-  background-image: url("/assets/photos/science-fiction-2907434_1920.jpg");
-  background-size: cover;
-  background-position: center;
-}
-
-#carousel-container #carousel-4 {
-  background-image: url("/assets/photos/fantasy-2770468_1920.jpg");
+  background-image: linear-gradient(to top, #000a, #0000), url("/assets/photos/keyboard-5466431_1920.jpg");
   background-size: cover;
   background-position: center;
 }
@@ -272,13 +268,6 @@ p {
   .content-column {
     max-width: 1300px;
     margin: auto;
-  }
-
-  section {
-    padding: 0px 50px;
-    border-style: solid;
-    border-width: 1px;
-    border-image : linear-gradient(to bottom, #fff0 0%, #fff0 10%, var(--bgColor) 50%, #fff0 90%, #fff0 100%) 1;
   }
 
 }
