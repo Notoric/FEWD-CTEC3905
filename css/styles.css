@@ -131,6 +131,8 @@ h2 {
   font-size: 3em;
   font-weight: 400;
   margin: 0;
+  text-decoration: underline;
+  text-decoration-color: var(--bgColor);
 }
 
 h3 {
@@ -154,6 +156,8 @@ h3 {
 .feature-showcase {
   display: flex;
   flex-direction: column;
+  border-radius: 40px;
+  background-color: #181818;
 }
 
 .feature-showcase-item {
@@ -206,7 +210,7 @@ h3 {
   border-radius: 40px;
   margin: 0;
   margin-bottom: 15px;
-  border: 5px solid black;
+  border: 3px solid var(--bgColor);
   text-shadow: black 5px 5px 5px;
   user-select: none;
 }
@@ -311,6 +315,10 @@ h3 {
   
   .feature-showcase-item {
     padding: 30px;
+  }
+
+  #table-heading {
+    margin-bottom: 50px;
   }
   
   #responsive-design {
