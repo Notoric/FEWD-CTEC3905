@@ -133,15 +133,36 @@ h2 {
   margin: 0;
 }
 
-#features {
+h3 {
+  font-size: 1.5em;
+  font-weight: 300;
+  margin: 0;
+
+}
+
+.features {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 
-#features p {
+#features-intro p {
   text-align: center;
+}
+
+.feature-showcase {
+  display: flex;
+  flex-direction: column;
+}
+
+.feature-showcase-item {
+  padding: 30px;
+  border-bottom: 1px solid var(--bgColor);
+}
+
+#modern-css {
+  border-bottom: none;
 }
 
 /* CAROUSEL STYLES */
@@ -278,6 +299,41 @@ h2 {
   .content-column {
     max-width: 1300px;
     margin: auto;
+  }
+
+  /* BELOW LANDING STYLES */
+
+  .feature-showcase {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+  }
+  
+  .feature-showcase-item {
+    padding: 30px;
+  }
+  
+  #responsive-design {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+    border-right: 1px solid var(--bgColor);
+  }
+  
+  #resize-support {
+    grid-column: 2 / 2;
+    grid-row: 2 / 3;
+  }
+  
+  #user-input {
+    grid-column: 1 / 2;
+    grid-row: 3 / 3;
+    border-right: 1px solid var(--bgColor);
+    border-bottom: none;
+  }
+  
+  #modern-css {
+    grid-column: 2 / 2;
+    grid-row: 3 / 3;
   }
 
 }
