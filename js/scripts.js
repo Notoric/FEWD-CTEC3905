@@ -89,6 +89,7 @@ bgColour.addEventListener("input", () => {
     const B = parseInt(bgColour.value.substring(5, 7), 16);
     changeBackground(R, G, B);
     localStorage.setItem("bgColour", bgColour.value);
+    document.documentElement.style.setProperty("--bgColor", bgColour.value);
 });
 
 function transitionBackground(newUrl, blackwhite) {
@@ -210,6 +211,7 @@ const initR = parseInt(bgColour.value.substring(1, 3), 16);
 const initG = parseInt(bgColour.value.substring(3, 5), 16);
 const initB = parseInt(bgColour.value.substring(5, 7), 16);
 changeBackground(initR, initG, initB);
+document.documentElement.style.setProperty("--bgColor", bgColour.value);
 // Initialize carousel
 initCarousel();
 carouselExpand(1);

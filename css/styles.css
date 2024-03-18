@@ -3,15 +3,16 @@
 /* applies to screens smaller than 500px (first breakpoint) */
 /* and above unless overwritten below */
 
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..600&display=swap');
 
 :root {
-  
+  --bgColor: #ffffff;
 }
 
 
 body {
   font-family: 'Outfit', sans-serif;
+  font-size: 1.5em;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -65,6 +66,7 @@ body {
 
 h1 {
   font-size: 10vw;
+  font-weight: 600;
   text-align: center;
   user-select: none;
 }
@@ -72,7 +74,11 @@ h1 {
 #titleBanner {
   padding-left: 5%;
   padding-right: 5%;
-  transition: color 1s, background-color 1s;
+  transition: color 1s, background-color 1s, border-radius 0.5s ease;
+}
+
+#titleBanner:hover {
+  border-radius: 1em;
 }
 
 .black {
@@ -108,11 +114,70 @@ h1 {
   font-size: 1.5em;
 }
 
+/* BELOW LANDING STYLES */
+
+#below-landing {
+  background-color: #101010;
+  overflow: auto;
+  color: white;
+  padding: 50px;
+}
+
+p {
+  font-weight: 200;
+}
+
+h2 {
+  font-size: 3em;
+  font-weight: 400;
+  margin: 0;
+  text-decoration: underline;
+  text-decoration-color: var(--bgColor);
+}
+
+h3 {
+  font-size: 1.5em;
+  font-weight: 300;
+  margin: 0;
+
+}
+
+.features {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#features-intro p {
+  text-align: center;
+}
+
+#table-heading {
+  margin-bottom: 25px;
+}
+
+.feature-showcase {
+  display: flex;
+  flex-direction: column;
+  border-radius: 40px;
+  background-color: #181818;
+}
+
+.feature-showcase-item {
+  padding: 30px;
+  border-bottom: 1px solid var(--bgColor);
+}
+
+#modern-css {
+  border-bottom: none;
+}
+
 /* CAROUSEL STYLES */
 
 #carousel {
   height: 100vh;
-  background-color: #0d0d0d;
+  background-color: #101010;
   position: relative;
   display: flex;
 }
@@ -121,7 +186,7 @@ h1 {
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 50px;
+  padding: 50px 0px;
 }
 
 .carousel-item {
@@ -131,8 +196,8 @@ h1 {
   width: calc(100% - 34px);
   min-height: 100px;
   margin: 12px;
-  border-radius: 55px;
-  border: 5px solid black;
+  border-radius: 52px;
+  border: 3px solid var(--bgColor);
   overflow: hidden;
 
   transition: width 1s ease, height 1s ease;
@@ -147,13 +212,9 @@ h1 {
   height: 70px;
   background-color: #202020;
   border-radius: 40px;
-  text-align: center;
-  line-height: 70px;
-  font-size: 50px;
   margin: 0;
   margin-bottom: 15px;
-  color: white;
-  border: 5px solid black;
+  border: 3px solid var(--bgColor);
   text-shadow: black 5px 5px 5px;
   user-select: none;
 }
@@ -165,8 +226,9 @@ h1 {
   transform: translate(100px, -35px);
   color: white;
   font-size: 25px;
+  font-weight: 550;
   margin: 0;
-  text-shadow: black 3px 3px 3px;
+  text-shadow: rgb(0, 0, 0) 3px 3px 3px;
   width: 500px;
 }
 
@@ -175,25 +237,19 @@ h1 {
 }
 
 #carousel-container #carousel-1 {
-  background-image: url("/assets/photos/space-4678686_1920.jpg");
+  background-image: linear-gradient(to top, #0008, #0000), url("/assets/photos/code-1839406_1920.jpg");
   background-size: cover;
   background-position: center;
 }
 
 #carousel-container #carousel-2 {
-  background-image: url("/assets/photos/universe-1622107_1920.jpg");
+  background-image: linear-gradient(to top, #000a, #0000), url("/assets/photos/software-3682509_1920.jpg");
   background-size: cover;
   background-position: center;
 }
 
 #carousel-container #carousel-3 {
-  background-image: url("/assets/photos/science-fiction-2907434_1920.jpg");
-  background-size: cover;
-  background-position: center;
-}
-
-#carousel-container #carousel-4 {
-  background-image: url("/assets/photos/fantasy-2770468_1920.jpg");
+  background-image: linear-gradient(to top, #000a, #0000), url("/assets/photos/keyboard-5466431_1920.jpg");
   background-size: cover;
   background-position: center;
 }
@@ -227,7 +283,7 @@ h1 {
     height: 800px;
     width: 150px;
     min-width: 150px;
-    border-radius: 80px;
+    border-radius: 74px;
   }
 
   .carousel-item .carousel-id {
@@ -246,6 +302,46 @@ h1 {
   .carousel-item .carousel-title {
     transform: translate(180px, -50px);
     font-size: 50px;
+  }
+
+  .content-column {
+    max-width: 1300px;
+    margin: auto;
+  }
+
+  /* BELOW LANDING STYLES */
+
+  .feature-showcase {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+  }
+  
+  .feature-showcase-item {
+    padding: 30px;
+  }
+  
+  #interactive-ui {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+    border-right: 1px solid var(--bgColor);
+  }
+  
+  #responsive-design {
+    grid-column: 2 / 2;
+    grid-row: 2 / 3;
+  }
+  
+  #user-input {
+    grid-column: 1 / 2;
+    grid-row: 3 / 3;
+    border-right: 1px solid var(--bgColor);
+    border-bottom: none;
+  }
+  
+  #modern-css {
+    grid-column: 2 / 2;
+    grid-row: 3 / 3;
   }
 
 }

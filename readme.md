@@ -20,3 +20,5 @@ The `js/scripts.js` file contains a simple console.log statement to confirm that
 ## assets/photos
 
 All images inside `assets/photos` folder are from https://pixabay.com and used under the licence outlined here https://pixabay.com/service/terms/
+
+All SVG Vectors are from https://www.svgrepo.com
