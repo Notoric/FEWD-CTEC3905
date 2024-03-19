@@ -1,4 +1,5 @@
-console.log("hello");
+let controller = new AbortController(); // Reference[1] https://levelup.gitconnected.com/asynchronous-tasks-got-you-down-heres-how-to-cancel-them-480801e69ae5
+let signal = controller.signal;
 
 // COLOUR PICKER BACKGROUND
 
@@ -175,6 +176,227 @@ function transitionLake() {
     transitionBackground("assets/photos/hintersee-3601004.jpg", "white");
 }
 
+// POKEDEX
+
+async function initPokedex() {
+    await populateGenerations();
+    await populateTypes();
+    populatePokedex(signal);
+}
+
+async function populateGenerations() {
+    const container = document.getElementById("generation-selector");
+    const url = "https://pokeapi.co/api/v2/generation/";
+    const response = await fetch(url);
+    const data = await response.json();
+
+    let generations = [];
+    let generationsURL = [];
+    
+    const genArray = data.results;
+    for (let i = 0; i < genArray.length; i++) {
+        const gen = genArray[i];
+        const genName = gen.name;
+        const genId = genName.split("-")[1].toUpperCase();
+        generations.push(genId);
+        generationsURL.push(gen.url);
+    }
+    
+    for (let i = 0; i < generations.length; i++) {
+        const gen = generations[i];
+        const genButton = document.createElement("input");
+        genButton.type = "checkbox";
+        genButton.value = generationsURL[i];
+        genButton.id = `gen${gen}`;
+        genButton.checked = true;
+        container.appendChild(genButton);
+        const genLabel = document.createElement("label");
+        genLabel.htmlFor = `gen${gen}`;
+        genLabel.innerHTML = `${gen}`;
+        container.appendChild(genLabel);
+    }
+}
+
+function getSelectedGenerations() {
+    const container = document.getElementById("generation-selector");
+    const checkboxes = container.getElementsByTagName("input");
+    let selected = [];
+
+    for (let i = 0; i < checkboxes.length; i++) {
+        if (checkboxes[i].checked) {
+            selected.push(checkboxes[i].value);
+        }
+    }
+
+    return(selected);
+}
+
+async function populateTypes() {
+    const container = document.getElementById("type-selector");
+    const url = "https://pokeapi.co/api/v2/type";
+    const response = await fetch(url);
+    const data = await response.json();
+
+    let types = [];
+    
+    const typeArray = data.results;
+    for (let i = 0; i < typeArray.length; i++) {
+        const type = typeArray[i];
+        const typeResponse = await fetch(type.url);
+        const typeData = await typeResponse.json();
+        if (typeData.id < 1000) {
+            types.push(type.name);
+        }
+    }
+    
+    for (let i = 0; i < types.length; i++) {
+        const type = types[i];
+        const typeButton = document.createElement("input");
+        typeButton.type = "checkbox";
+        typeButton.value = type;
+        typeButton.id = type;
+        typeButton.checked = true;
+        container.appendChild(typeButton);
+
+        const typeImg = document.createElement("img");
+        typeImg.src = `https://raw.githubusercontent.com/duiker101/pokemon-type-svg-icons/5781623f147f1bf850f426cfe1874ba56a9b75ee/icons/${type}.svg`;
+        typeImg.alt = `${type}`;
+
+        const typeLabel = document.createElement("label");
+        typeLabel.htmlFor = type;
+        typeLabel.appendChild(typeImg);
+        container.appendChild(typeLabel);
+    }
+}
+
+function getSelectedTypes() {
+    const container = document.getElementById("type-selector");
+    const checkboxes = container.getElementsByTagName("input");
+    let selected = [];
+
+    for (let i = 0; i < checkboxes.length; i++) {
+        if (checkboxes[i].checked) {
+            selected.push(checkboxes[i].value);
+        }
+    }
+
+    return selected;
+}
+
+async function populatePokedex(signal) {
+    const container = document.getElementById("pokemon-container");
+    container.innerHTML = "";
+    const types = await getSelectedTypes();
+    const generations = await getSelectedGenerations();
+    for (let i = 0; i < generations.length; i++) {
+        if (signal.aborted) {
+            return;
+        }
+        const url = generations[i];
+        const response = await fetch(url);
+        const data = await response.json();
+        const pokemon = data.pokemon_species;
+        for (let j = 0; j < pokemon.length; j++) {
+            if (signal.aborted) {
+                return;
+            }
+            const poke = pokemon[j];
+            const speciesURL = poke.url;
+            const speciesResponse = await fetch(speciesURL);
+            const speciesData = await speciesResponse.json();
+            const varieties = speciesData.varieties;
+            for (let k = 0; k < varieties.length; k++) {
+                if (signal.aborted) {
+                    return;
+                }
+                const variety = varieties[k];
+                const varietyURL = variety.pokemon.url;
+                const varietyResponse = await fetch(varietyURL);
+                const varietyData = await varietyResponse.json();
+                const varietyTypes = varietyData.types;
+                if (types.includes(varietyTypes[0].type.name)) {
+                    if (signal.aborted) {
+                        return;
+                    }
+                    addPokemon(varietyData);
+                } else {
+                    try {
+                        if (types.includes(varietyTypes[1].type.name)) {
+                            if (signal.aborted) {
+                                return;
+                            }
+                            addPokemon(varietyData);
+                        }
+                    } catch {
+                        //no second type
+                    }
+                }
+            }
+        }
+    }
+}
+
+function addPokemon(pokemonData) {
+    const container = document.getElementById("pokemon-container");
+
+    // if (container.childElementCount > 100) {
+    //     return;
+    // }
+
+    const pokemon = document.createElement("div");
+    pokemon.className = "pokemon-card";
+    pokemon.classList.add(pokemonData.types[0].type.name + "-primary-type");
+    if (pokemonData.types[1]) {
+        pokemon.classList.add(pokemonData.types[1].type.name + "-secondary-type");
+    }
+    pokemon.id = pokemonData.name;
+
+    const pokemonName = document.createElement("p");
+    pokemonName.className = "pokemon-name";
+    let formatedName = "";
+    pokemonData.name.split("-").forEach((word) => { 
+        formatedName += word.charAt(0).toUpperCase() + word.slice(1) + " ";
+    });
+    if (formatedName.length > 20) {
+        formatedName = formatedName.slice(0, formatedName.length - 1);
+        formatedName = formatedName.slice(0, formatedName.lastIndexOf(" "));
+    }
+    pokemonName.innerHTML = formatedName;
+    pokemon.appendChild(pokemonName);
+
+    const pokemonId = document.createElement("p");
+    pokemonId.className = "pokemon-id";
+    pokemonId.innerHTML = `#${pokemonData.id}`;
+    pokemon.style.order = pokemonData.id;
+    pokemon.appendChild(pokemonId);
+
+    const pokemonImg = document.createElement("img");
+    pokemonImg.src = pokemonData.sprites.front_default;
+    pokemonImg.alt = pokemonData.name;
+    pokemon.appendChild(pokemonImg);
+
+    container.appendChild(pokemon);
+}
+
+const generationSelector = document.getElementById("generation-selector");
+generationSelector.addEventListener("change", (event) => {
+    restartPokedexUpdate();
+});
+
+const typeSelector = document.getElementById("type-selector");
+typeSelector.addEventListener("change", (event) => {
+    restartPokedexUpdate();
+});
+
+function restartPokedexUpdate() {
+    controller.abort();
+    setTimeout(() => {
+        controller = new AbortController();
+        signal = controller.signal;
+        populatePokedex(signal);
+    }, 250);
+}
+
 // ACCORDIAN IMAGES
 
 function carouselExpand(i) {
@@ -206,7 +428,7 @@ function initCarousel() {
 // INITIALIZATION
 // Set background colour to last saved value
 const bgColor = document.getElementById("bgColour");
-bgColor.value = localStorage.getItem("bgColour") || "#ffffff";
+bgColor.value = localStorage.getItem("bgColour") || "#ff0070";
 const initR = parseInt(bgColour.value.substring(1, 3), 16);
 const initG = parseInt(bgColour.value.substring(3, 5), 16);
 const initB = parseInt(bgColour.value.substring(5, 7), 16);
@@ -215,3 +437,5 @@ document.documentElement.style.setProperty("--bgColor", bgColour.value);
 // Initialize carousel
 initCarousel();
 carouselExpand(1);
+// Initialize pokedex
+initPokedex();
