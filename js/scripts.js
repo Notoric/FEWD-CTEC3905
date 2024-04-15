@@ -375,6 +375,11 @@ function addPokemon(pokemonData) {
     pokemonImg.alt = pokemonData.name;
     pokemon.appendChild(pokemonImg);
 
+    pokemon.addEventListener("click", () => {
+        const id = pokemonData.id;
+        createPokemonDisplay(id);
+    });
+
     container.appendChild(pokemon);
 }
 
@@ -395,6 +400,115 @@ function restartPokedexUpdate() {
         signal = controller.signal;
         populatePokedex(signal);
     }, 250);
+}
+
+async function createPokemonDisplay(id) {
+    const fullscreenContainer = document.getElementById("fullscreen");
+    fullscreenContainer.className = "visible";
+
+    const pokemonDisplay = document.createElement("div");
+    pokemonDisplay.id = "pokemon-display";
+
+    const closeButton = document.createElement("button");
+    closeButton.id = "close-button";
+    closeButton.innerHTML = "X";
+    closeButton.addEventListener("click", () => {
+        closePokemonDisplay();
+    });
+
+    fullscreenContainer.addEventListener("click", (event) => {
+        if (event.target.id === "fullscreen") {
+            closePokemonDisplay();
+        }
+    });
+
+    const url = `https://pokeapi.co/api/v2/pokemon/${id}`;
+    const response = await fetch(url);
+    const data = await response.json();
+    
+    pokemonDisplay.className = data.types[0].type.name + "-primary-type"
+
+    const pokemonName = document.createElement("p");
+    pokemonName.className = "pokemon-name";
+
+    let formatedName = "";
+    data.name.split("-").forEach((word) => {
+        formatedName += word.charAt(0).toUpperCase() + word.slice(1) + " ";
+    });
+    formatedName = formatedName.slice(0, formatedName.length - 1);
+
+    pokemonName.innerHTML = formatedName;
+
+    const pokemonId = document.createElement("p");
+    pokemonId.className = "pokemon-id";
+    pokemonId.innerHTML = `#${data.id}`;
+
+    const pokemonImg = document.createElement("img");
+    pokemonImg.src = data.sprites.other["official-artwork"].front_default;
+    pokemonImg.alt = data.name;
+
+    const pokemonStatblock = document.createElement("div");
+    pokemonStatblock.id = "statblock";
+
+    data.stats.forEach((stat) => {
+        const statBar = document.createElement("div");
+        statBar.className = "stat-bar";
+        statBar.id = stat.stat.name;
+        const statName = document.createElement("p");
+        statName.className = "stat-name";
+        let formatedStatName = "";
+        stat.stat.name.split("-").forEach((word) => {
+            formatedStatName += word.charAt(0).toUpperCase() + word.slice(1) + " ";
+        });
+        formatedStatName = formatedStatName.slice(0, formatedStatName.length - 1);
+
+        statName.innerHTML = formatedStatName;
+        const statValue = document.createElement("p");
+        statValue.className = "stat-value";
+        statValue.innerHTML = stat.base_stat;
+
+        const statGraphic = document.createElement("p");
+        statGraphic.className = "stat-graphic";
+        let stringFilled = document.createElement("span");
+        let stringEmpty = document.createElement("span");
+
+        const barSize = 25;
+
+        const baseStat = (stat.base_stat / 255) * barSize;
+        const emptyStat = barSize - baseStat;
+
+        stringFilled.innerHTML = "❚".repeat(baseStat);
+        stringEmpty.innerHTML = "❚".repeat(emptyStat);
+
+        stringFilled.className = "stat-filled";
+        stringEmpty.className = "stat-empty";
+
+        statGraphic.appendChild(stringFilled);
+        statGraphic.appendChild(stringEmpty);
+
+        statBar.appendChild(statGraphic);
+        statBar.appendChild(statName);
+        statBar.appendChild(statValue);
+        pokemonStatblock.appendChild(statBar);
+    });
+
+    pokemonDisplay.appendChild(pokemonName);
+    pokemonDisplay.appendChild(pokemonId);
+    pokemonDisplay.appendChild(pokemonImg);
+    pokemonDisplay.appendChild(pokemonStatblock);
+
+    fullscreenContainer.appendChild(pokemonDisplay);
+    fullscreenContainer.appendChild(closeButton);
+}
+
+function closePokemonDisplay() {
+    const fullscreenContainer = document.getElementById("fullscreen");
+    fullscreenContainer.className = "";
+    const children = Array.from(fullscreenContainer.children);
+    children.forEach((child) => {
+        fullscreenContainer.removeChild(child);
+    });
+
 }
 
 // ACCORDIAN IMAGES
@@ -439,3 +553,18 @@ initCarousel();
 carouselExpand(1);
 // Initialize pokedex
 initPokedex();
+
+function handleMouseMove(event) {
+    const width = document.body.clientWidth;
+    const height = document.body.clientHeight;
+    
+    const xAbsolute = event.clientX / width;
+    const yAbsolute = event.clientY / height;
+    
+    const maxOffset = 40;
+    const xOffset = (xAbsolute * (2 * maxOffset)) - maxOffset;
+    const yOffset = (yAbsolute * (2 * maxOffset)) - maxOffset;
+    
+    document.body.style.backgroundPosition = `${xOffset}px ${yOffset}px`;
+  }
+  
