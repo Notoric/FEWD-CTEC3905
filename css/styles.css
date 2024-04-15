@@ -206,16 +206,25 @@ h3 {
 }
 
 #fullscreen.visible {
-  display: block;
+  display: flex;
 }
 
 #pokemon-display {
-  height: calc(100% - 70px);
-  width: calc(100% - 70px);
+  height: calc(100% - 90px);
+  width: calc(100% - 90px);
   background: white;
-  margin: 35px;
+  margin: auto;
+  align-self: center;
   display: flex;
-  border-radius: 25px;
+  flex-direction: column;
+  border-radius: 26px;
+  padding: 10px;
+  overflow-y: scroll;
+  min-width: 260px;
+}
+
+#pokemon-display::-webkit-scrollbar {
+  display: none;
 }
 
 #fullscreen #close-button {
@@ -232,9 +241,52 @@ h3 {
   text-shadow: black 1px 1px 3px;
 }
 
-#pokemon-display img {
+#pokemon-display #image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   max-height: 475px;
-  max-width: 475px;
+  background: #ddd;
+  background-image: linear-gradient(to right, transparent 0px, #999 1px, transparent 2px), linear-gradient(to bottom, transparent 0px, #999 1px, transparent 2px);
+  background-size: 35px 35px;
+  animation: transform 2.5s infinite;
+  animation-timing-function: linear;
+  border-radius: 15px;
+  margin-bottom: 8px;
+}
+
+#pokemon-display img {
+  width: 100%;
+}
+
+@keyframes transform {
+  from {
+    background-position: 0px 0px;
+  }
+  to {
+    background-position: 35px 35px;
+  }
+}
+
+#pokemon-display .pokemon-name {
+  font-size: 1.2em;
+  font-weight: 500;
+  margin: 0;
+  margin-left: 10px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+#pokemon-display .pokemon-id {
+  font-size: 1.6em;
+  font-weight: 150;
+  margin: 0;
+  margin-left: 10px;
+  position: relative;
+  overflow: visible;
+  height: 0;
+  width: 0;
+  text-shadow: #fff 0px 0px 5px;
 }
 
 #statblock .stat-empty {
@@ -258,7 +310,7 @@ h3 {
 }
 
 #statblock #special-defense .stat-filled {
-  color: #a030ff;
+  color: #6b30ff;
 }
 
 #statblock #speed .stat-filled {
@@ -273,6 +325,7 @@ h3 {
   align-items: center;
   padding: 10px;
   height: fit-content;
+  border-radius: 15px;
 }
 
 .stat-bar {
@@ -298,6 +351,12 @@ h3 {
 
 #statblock p {
   margin: 0;
+}
+
+#image-and-stats {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 /* POKEDEX STYLES */
@@ -739,6 +798,44 @@ h3 {
 
   /* applies to screens wider than 499px */
 
+  /* FULLSCREEN STYLES */
+  #pokemon-display {
+    height: calc(100% - 120px);
+    width: calc(100% - 120px);
+    border-radius: 30px;
+    padding: 20px;
+    max-height: 600px;
+    max-width: 900px;
+  }
+
+  #image-and-stats {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 280px;
+
+  }
+
+  #pokemon-display img {
+    grid-column: 1;
+    max-height: 440px;
+    max-width: 440px;
+    justify-self: center;
+  }
+
+  #pokemon-display #image-container {
+    display: flex;
+    grid-column: 1;
+    width: calc(100% - 10px);
+    justify-content: center;
+    margin: 0;
+    margin-right: 10px;
+  }
+
+  #statblock {
+    grid-column: 2;
+    width: 260px;
+  }
+
 }
 
 
@@ -790,10 +887,10 @@ h3 {
   /* FULLSCREEN STYLES */
 
   #pokemon-display {
-    height: calc(100% - 200px);
-    width: calc(100% - 200px);
-    margin: 100px;
-    border-radius: 60px;
+    border-radius: 35px;
+    padding: 20px;
+    max-height: 755px;
+    max-width: 1120px;
   }
 
   #fullscreen #close-button {
@@ -801,11 +898,45 @@ h3 {
     right: 20px;
     height: 60px;
     width: 60px;
-    border-radius: 60px;
     font-size: 2em;
   }
 
+  #pokemon-display .pokemon-name {
+    font-size: 2.2em;
+    text-align: left;
+    margin-bottom: 5px;
+    transform: translate(0px, -8px);
+  }
 
+  #pokemon-display .pokemon-id {
+    font-size: 2.5em;
+  }
+
+  #pokemon-display img {
+    max-height: 475px;
+    max-width: 475px;
+    height: 475px;
+    width: 475px;
+  }
+
+  #pokemon-display #image-container {
+    max-height: 475px;
+    max-width: 475px;
+    height: 475px;
+    width: 475px;
+    margin: 0;
+    margin-bottom: 8px;
+  }
+
+  #statblock {
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 455px;
+    font-size: 0.85em !important;
+    justify-content: space-between;
+    grid-column: 1;
+    grid-row: 2;
+  }
 
   /* BELOW LANDING STYLES */
 

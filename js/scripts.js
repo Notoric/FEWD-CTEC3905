@@ -446,6 +446,9 @@ async function createPokemonDisplay(id) {
     const pokemonImg = document.createElement("img");
     pokemonImg.src = data.sprites.other["official-artwork"].front_default;
     pokemonImg.alt = data.name;
+    const pokemonImgContainer = document.createElement("div");
+    pokemonImgContainer.id = "image-container";
+    pokemonImgContainer.appendChild(pokemonImg);
 
     const pokemonStatblock = document.createElement("div");
     pokemonStatblock.id = "statblock";
@@ -492,10 +495,14 @@ async function createPokemonDisplay(id) {
         pokemonStatblock.appendChild(statBar);
     });
 
+    const imageAndStats = document.createElement("div");
+    imageAndStats.id = "image-and-stats";
+    imageAndStats.appendChild(pokemonImgContainer);
+    imageAndStats.appendChild(pokemonStatblock);
+
     pokemonDisplay.appendChild(pokemonName);
     pokemonDisplay.appendChild(pokemonId);
-    pokemonDisplay.appendChild(pokemonImg);
-    pokemonDisplay.appendChild(pokemonStatblock);
+    pokemonDisplay.appendChild(imageAndStats);
 
     fullscreenContainer.appendChild(pokemonDisplay);
     fullscreenContainer.appendChild(closeButton);
