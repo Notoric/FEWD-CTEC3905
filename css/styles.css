@@ -288,7 +288,7 @@ h3 {
   overflow: hidden;
   height: fit-content;
   position: relative;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 #description-carousel .description-carousel-item {

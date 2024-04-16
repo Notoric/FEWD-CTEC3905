@@ -740,7 +740,12 @@ function pokemonCarousel(direction) {
         rightButton.style.display = "block";
     }
 
-    transitionPokemonCarousel(activePokemonCarousel);
+    try {
+        transitionPokemonCarousel(activePokemonCarousel);
+    } catch {
+        //carousel not built yet
+    }
+    
 }
 
 function transitionPokemonCarousel(i) {
