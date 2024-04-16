@@ -221,10 +221,7 @@ h3 {
   padding: 10px;
   overflow-y: scroll;
   min-width: 260px;
-}
-
-#pokemon-display::-webkit-scrollbar {
-  display: none;
+  position: relative;
 }
 
 #fullscreen #close-button {
@@ -241,6 +238,20 @@ h3 {
   text-shadow: black 1px 1px 3px;
 }
 
+#pokemon-display #type-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-top: 8px;
+  margin-right: 10px;
+}
+
+#pokemon-display .type-icon {
+  width: 40px;
+  height: 40px;
+  margin-left: 10px;
+}
+
 #pokemon-display #image-container {
   display: flex;
   justify-content: center;
@@ -255,6 +266,12 @@ h3 {
   margin-bottom: 8px;
 }
 
+#pokemon-display #dex-and-type-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
 #pokemon-display img {
   width: 100%;
 }
@@ -267,9 +284,11 @@ h3 {
   padding-left: 28px;
   padding-right: 28px;
   margin: 0;
+  margin-bottom: 8px;
   overflow: hidden;
   height: fit-content;
   position: relative;
+  overflow-y: scroll;
 }
 
 #description-carousel .description-carousel-item {
@@ -310,11 +329,13 @@ h3 {
 #description-carousel .description-text {
   left: 0;
   color: #ccc;
+  font-style: italic;
+  font-weight: 250;
 }
 
 #description-carousel .description-game {
   left: 0;
-  font-size: 1em;
+  font-size: 1.2em;
   font-weight: 400;
   padding-bottom: 10px;
   border-bottom: 1px solid #ccc;
@@ -335,7 +356,7 @@ h3 {
   margin: 0;
   margin-left: 10px;
   margin-bottom: 10px;
-  text-align: center;
+  text-align: left;
 }
 
 #pokemon-display .pokemon-id {
@@ -419,6 +440,64 @@ h3 {
   display: flex;
   flex-direction: column;
   margin-bottom: 8px;
+}
+
+#type-chart-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  width: 100%;
+  grid-template-rows: 60px 1fr;
+  background-color: #222;
+  border-radius: 15px;
+  color: #ccc;
+  margin-bottom: 8px;
+  height: fit-content;
+}
+
+#type-chart-container #type-chart-title {
+  grid-column: 1 / span 5;
+  margin: 0;
+  margin-top: 10px;
+  margin-left: 10px;
+  color: white;
+  font-weight: 400;
+  text-align: center;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #ccc;
+  font-size: 1.2em;
+}
+
+.type-chart-title {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  height: 40px;
+  border-bottom: 1px solid #ccc;
+  justify-content: center;
+  padding: 2px;
+}
+
+.type-chart-element {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: black;
+  text-align: center;
+  margin: 2px;
+  height: 18px;
+  border-radius: 9px;
+}
+
+#noeffect-column, #doubleresist-column, #resist-column, #weak-column {
+  border-right: 1px solid #ccc;
+}
+
+#type-chart-container .type-chart-column {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.6em;
+  padding: 0;
+  list-style-type: none;
 }
 
 /* POKEDEX STYLES */
@@ -738,6 +817,7 @@ h3 {
   margin: 10px;
   border-radius: 40px;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .pokemon-card img {
@@ -868,13 +948,18 @@ h3 {
     padding: 20px;
     max-height: 600px;
     max-width: 900px;
+    padding-bottom: 12px;
   }
 
   #image-and-stats {
     width: 100%;
     display: grid;
     grid-template-columns: 1fr 280px;
+  }
 
+  #pokemon-display #type-container {
+    margin-top: 14px;
+    margin-right: 20px;
   }
 
   #pokemon-display img {
@@ -953,6 +1038,7 @@ h3 {
     padding: 20px;
     max-height: 755px;
     max-width: 1120px;
+    overflow: hidden;
   }
 
   #fullscreen #close-button {
@@ -967,6 +1053,7 @@ h3 {
     display: grid;
     grid-template-columns: 475px 1fr;
     grid-column-gap: 8px;
+    grid-template-rows: auto;
   }
 
   #pokemon-display .pokemon-name {
@@ -978,6 +1065,24 @@ h3 {
 
   #pokemon-display .pokemon-id {
     font-size: 2.5em;
+  }
+
+  #pokemon-display #type-container {
+    margin-top: 15px;
+    margin-right: 25px;
+  }
+
+  #pokemon-display .type-icon {
+    width: 60px;
+    height: 60px;
+  }
+
+  #image-and-stats {
+    width: 475px;
+    display: flex;
+    flex-direction: column;
+    grid-column: 1;
+    grid-row: 1 / span 2;
   }
 
   #pokemon-display img {
@@ -1004,6 +1109,15 @@ h3 {
     justify-content: space-between;
     grid-column: 1;
     grid-row: 2;
+  }
+
+  #description-carousel {
+    grid-column: 2;
+    height: 338px; 
+  }
+
+  #type-chart-container {
+    height: 337px;
   }
 
   /* BELOW LANDING STYLES */

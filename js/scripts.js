@@ -209,7 +209,11 @@ async function populateGenerations() {
         genButton.type = "checkbox";
         genButton.value = generationsURL[i];
         genButton.id = `gen${gen}`;
-        genButton.checked = true;
+        if (gen === "I") {
+            genButton.checked = true;
+        } else {
+            genButton.checked = false;
+        }
         container.appendChild(genButton);
         const genLabel = document.createElement("label");
         genLabel.htmlFor = `gen${gen}`;
@@ -256,7 +260,11 @@ async function populateTypes() {
         typeButton.type = "checkbox";
         typeButton.value = type;
         typeButton.id = type;
-        typeButton.checked = true;
+        if (type === "normal") {
+            typeButton.checked = true;
+        } else {
+            typeButton.checked = false;
+        }
         container.appendChild(typeButton);
 
         const typeImg = document.createElement("img");
@@ -539,6 +547,7 @@ async function createPokemonDisplay(id) {
         let descriptionFormatted = description;
         descriptionFormatted = descriptionFormatted.replace("\u000c", " ");
         descriptionFormatted = descriptionFormatted.replace("\n", " ");
+        descriptionFormatted = descriptionFormatted.replace("POKéMON", "Pokémon");
         
         const descriptionText = document.createElement("p");
         descriptionText.className = "description-text";
@@ -570,6 +579,82 @@ async function createPokemonDisplay(id) {
         pokemonCarousel("right");
     });
 
+    const types = data.types;
+    const primaryType = types[0].type.name;
+    const primaryIcon = `https://raw.githubusercontent.com/duiker101/pokemon-type-svg-icons/5781623f147f1bf850f426cfe1874ba56a9b75ee/icons/${primaryType}.svg`
+    let secondaryType = "";
+
+    if (types[1]) {
+        secondaryType = types[1].type.name;
+        secondaryIcon = `https://raw.githubusercontent.com/duiker101/pokemon-type-svg-icons/5781623f147f1bf850f426cfe1874ba56a9b75ee/icons/${secondaryType}.svg`
+    } else {
+        secondaryType = "Monotype";
+    }
+
+    const typeChartContainer = document.createElement("div");
+    typeChartContainer.id = "type-chart-container";
+
+    const typeChartTitle = document.createElement("p");
+    typeChartTitle.id = "type-chart-title";
+    typeChartTitle.innerHTML = "Type Chart";
+
+    const noeffectColumn = document.createElement("ul");
+    noeffectColumn.id = "noeffect-column";
+    noeffectColumn.className = "type-chart-column";
+    const noeffectTitle = document.createElement("li");
+    noeffectTitle.innerHTML = "Immune";
+    noeffectTitle.className = "type-chart-title";
+    noeffectColumn.appendChild(noeffectTitle);
+
+    const doubleresistColumn = document.createElement("ul");
+    doubleresistColumn.id = "doubleresist-column";
+    doubleresistColumn.className = "type-chart-column";
+    const doubleresistTitle = document.createElement("li");
+    doubleresistTitle.innerHTML = "Double Resist";
+    doubleresistTitle.className = "type-chart-title";
+    doubleresistColumn.appendChild(doubleresistTitle);
+
+    const resistColumn = document.createElement("ul");
+    resistColumn.id = "resist-column";
+    resistColumn.className = "type-chart-column";
+    const resistTitle = document.createElement("li");
+    resistTitle.innerHTML = "Resist";
+    resistTitle.className = "type-chart-title";
+    resistColumn.appendChild(resistTitle);
+
+    const weakColumn = document.createElement("ul");
+    weakColumn.id = "weak-column";
+    weakColumn.className = "type-chart-column";
+    const weakTitle = document.createElement("li");
+    weakTitle.innerHTML = "Weak";
+    weakTitle.className = "type-chart-title";
+    weakColumn.appendChild(weakTitle);
+
+    const doubleweakColumn = document.createElement("ul");
+    doubleweakColumn.id = "doubleweak-column";
+    doubleweakColumn.className = "type-chart-column";
+    const doubleweakTitle = document.createElement("li");
+    doubleweakTitle.innerHTML = "Double Weak";
+    doubleweakTitle.className = "type-chart-title";
+    doubleweakColumn.appendChild(doubleweakTitle);
+
+    typeChartContainer.appendChild(typeChartTitle);
+    typeChartContainer.appendChild(noeffectColumn);
+    typeChartContainer.appendChild(doubleresistColumn);
+    typeChartContainer.appendChild(resistColumn);
+    typeChartContainer.appendChild(weakColumn);
+    typeChartContainer.appendChild(doubleweakColumn);
+
+    const primaryImg = document.createElement("img");
+    primaryImg.src = primaryIcon;
+    primaryImg.alt = primaryType;
+    primaryImg.className = "type-icon";
+
+    const secondaryImg = document.createElement("img");
+    secondaryImg.src = secondaryIcon;
+    secondaryImg.alt = secondaryType;
+    secondaryImg.className = "type-icon";
+
     descriptionCarousel.appendChild(leftButton);
     descriptionCarousel.appendChild(rightButton);
 
@@ -580,16 +665,33 @@ async function createPokemonDisplay(id) {
     const pokemonContents = document.createElement("div");
     pokemonContents.id = "pokemon-contents";
 
+    const typeContainer = document.createElement("div");
+    typeContainer.id = "type-container";
+    typeContainer.appendChild(primaryImg);
+    typeContainer.appendChild(secondaryImg);
+
+    // const dexAndTypeContainer = document.createElement("div");
+    // dexAndTypeContainer.id = "dex-and-type-container";
+    // dexAndTypeContainer.appendChild(descriptionCarousel);
+    // dexAndTypeContainer.appendChild(typeChartContainer);
+
     pokemonDisplay.appendChild(pokemonName);
     pokemonDisplay.appendChild(pokemonId);
+    pokemonDisplay.appendChild(typeContainer);
     
     pokemonContents.appendChild(imageAndStats);
+    //pokemonContents.appendChild(dexAndTypeContainer);
     pokemonContents.appendChild(descriptionCarousel);
+    pokemonContents.appendChild(typeChartContainer);
+
 
     pokemonDisplay.appendChild(pokemonContents);
 
     fullscreenContainer.appendChild(pokemonDisplay);
     fullscreenContainer.appendChild(closeButton);
+
+    const typeChart = await calculateTypeChart(primaryType, secondaryType)
+    displayTypeChart(typeChart);
 }
 
 function closePokemonDisplay() {
@@ -649,6 +751,120 @@ function transitionPokemonCarousel(i) {
     for (const item of items) {
         item.style.transform = `translateX(-${offset}px)`;
     }
+}
+
+async function calculateTypeChart(primaryType, secondaryType, stat) {
+    let typeArray = {"normal": 0, "fighting": 0, "flying": 0, "poison": 0, "ground": 0, "rock": 0, "bug": 0, "ghost": 0, "steel": 0, "fire": 0, "water": 0, "grass": 0, "electric": 0, "psychic": 0, "ice": 0, "dragon": 0, "dark": 0, "fairy": 0};
+
+    const primaryURL = `https://pokeapi.co/api/v2/type/${primaryType}`;
+    const primaryResponse = await fetch(primaryURL);
+    const primaryData = await primaryResponse.json();
+
+    primaryData.damage_relations.double_damage_from.forEach((type) => {
+        typeArray[type.name] += 1;
+    });
+    primaryData.damage_relations.half_damage_from.forEach((type) => { 
+        typeArray[type.name] -= 1;
+    });
+    primaryData.damage_relations.no_damage_from.forEach((type) => {
+        typeArray[type.name] -= 999;
+    });
+
+    if (secondaryType !== "Monotype") {
+        const secondaryURL = `https://pokeapi.co/api/v2/type/${secondaryType}`;
+        const secondaryResponse = await fetch(secondaryURL);
+        const secondaryData = await secondaryResponse.json();
+
+        secondaryData.damage_relations.double_damage_from.forEach((type) => {
+            typeArray[type.name] += 1;
+        });
+        secondaryData.damage_relations.half_damage_from.forEach((type) => { 
+            typeArray[type.name] -= 1;
+        });
+        secondaryData.damage_relations.no_damage_from.forEach((type) => {
+            typeArray[type.name] -= 999;
+        });
+    }
+    
+    return typeArray;
+}
+
+function displayTypeChart(typeArray) {
+    const resist = [];
+    const doubleresist = [];
+    const weak = [];
+    const doubleweak = [];
+    const noeffect = [];
+    for (const type in typeArray) {
+        if (typeArray[type] === -1) {
+            resist.push(type);
+        } else if (typeArray[type] === -2) {
+            doubleresist.push(type);
+        } else if (typeArray[type] === 1) {
+            weak.push(type);
+        }
+        else if (typeArray[type] === 2) {
+            doubleweak.push(type);
+        } else if (typeArray[type] < -100) {
+            noeffect.push(type);
+        } else {
+            //neutral
+        }
+    }
+
+    const noeffectColumn = document.getElementById("noeffect-column");
+    const doubleresistColumn = document.getElementById("doubleresist-column");
+    const resistColumn = document.getElementById("resist-column");
+    const weakColumn = document.getElementById("weak-column");
+    const doubleweakColumn = document.getElementById("doubleweak-column");
+
+    for (const element of document.getElementsByClassName("type-chart-element")) {
+        element.remove();
+    }
+
+    try {
+        noeffect.forEach((type) => {
+            const typeElement = document.createElement("li");
+            typeElement.innerHTML = type.toUpperCase();
+            typeElement.className = "type-chart-element";
+            typeElement.classList.add(type + "-primary-type");
+            noeffectColumn.appendChild(typeElement);
+        });
+
+        doubleresist.forEach((type) => {
+            const typeElement = document.createElement("li");
+            typeElement.innerHTML = type.toUpperCase();
+            typeElement.className = "type-chart-element";
+            typeElement.classList.add(type + "-primary-type");
+            doubleresistColumn.appendChild(typeElement);
+        });
+
+        resist.forEach((type) => {
+            const typeElement = document.createElement("li");
+            typeElement.innerHTML = type.toUpperCase();
+            typeElement.className = "type-chart-element";
+            typeElement.classList.add(type + "-primary-type");
+            resistColumn.appendChild(typeElement);
+        });
+
+        weak.forEach((type) => {
+            const typeElement = document.createElement("li");
+            typeElement.innerHTML = type.toUpperCase();
+            typeElement.className = "type-chart-element";
+            typeElement.classList.add(type + "-primary-type");
+            weakColumn.appendChild(typeElement);
+        });
+
+        doubleweak.forEach((type) => {
+            const typeElement = document.createElement("li");
+            typeElement.innerHTML = type.toUpperCase();
+            typeElement.className = "type-chart-element";
+            typeElement.classList.add(type + "-primary-type");
+            doubleweakColumn.appendChild(typeElement);
+        });
+    } catch {
+        //type elements not built yet
+    }    
 }
 
 // ACCORDIAN IMAGES
