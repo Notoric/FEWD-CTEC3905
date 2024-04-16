@@ -1,5 +1,6 @@
 let controller = new AbortController(); // Reference[1] https://levelup.gitconnected.com/asynchronous-tasks-got-you-down-heres-how-to-cancel-them-480801e69ae5
 let signal = controller.signal;
+let activePokemonCarousel = 0;
 
 // COLOUR PICKER BACKGROUND
 
@@ -403,6 +404,7 @@ function restartPokedexUpdate() {
 }
 
 async function createPokemonDisplay(id) {
+    activePokemonCarousel = 0;
     const fullscreenContainer = document.getElementById("fullscreen");
     fullscreenContainer.className = "visible";
 
@@ -425,6 +427,10 @@ async function createPokemonDisplay(id) {
     const url = `https://pokeapi.co/api/v2/pokemon/${id}`;
     const response = await fetch(url);
     const data = await response.json();
+
+    const speciesurl = data.species.url;
+    const speciesResponse = await fetch(speciesurl);
+    const speciesData = await speciesResponse.json();
     
     pokemonDisplay.className = data.types[0].type.name + "-primary-type"
 
@@ -500,9 +506,87 @@ async function createPokemonDisplay(id) {
     imageAndStats.appendChild(pokemonImgContainer);
     imageAndStats.appendChild(pokemonStatblock);
 
+    const descriptionCarousel = document.createElement("div");
+    descriptionCarousel.id = "description-carousel";
+
+    let descriptionArray = [];
+
+    speciesData.flavor_text_entries.forEach((entry) => {
+        if (entry.language.name === "en") {
+            const game = entry.version.name;
+            const pokemonDescription = entry.flavor_text;
+            descriptionArray[game] = pokemonDescription;
+        }
+    });
+
+    let descriptionArrayFiltered = []
+    let gameArrayFiltered = []
+
+    for (const game in descriptionArray) {
+        let index = descriptionArrayFiltered.indexOf(descriptionArray[game]);
+        if (index === -1) {
+            descriptionArrayFiltered.push(descriptionArray[game]);
+            gameArrayFiltered.push(game);
+        } else {
+            gameArrayFiltered[index] += " | " + game;
+        }
+    }
+
+    descriptionArrayFiltered.forEach((description, i) => {
+        const carouselItem = document.createElement("div");
+        carouselItem.className = "description-carousel-item";
+
+        let descriptionFormatted = description;
+        descriptionFormatted = descriptionFormatted.replace("\u000c", " ");
+        descriptionFormatted = descriptionFormatted.replace("\n", " ");
+        
+        const descriptionText = document.createElement("p");
+        descriptionText.className = "description-text";
+        descriptionText.innerHTML = descriptionFormatted;
+
+        const descriptionGame = document.createElement("p");
+        descriptionGame.className = "description-game";
+        descriptionGame.innerHTML = gameArrayFiltered[i].toUpperCase();
+
+        carouselItem.appendChild(descriptionGame);
+        carouselItem.appendChild(descriptionText);
+        descriptionCarousel.appendChild(carouselItem);
+    });
+
+    const leftButton = document.createElement("button");
+    leftButton.id = "carousel-left-button";
+    leftButton.innerHTML = "◀  ";
+    leftButton.style.display = "none";
+
+    const rightButton = document.createElement("button");
+    rightButton.id = "carousel-right-button";
+    rightButton.innerHTML = "  ▶";
+
+    leftButton.addEventListener("click", () => {
+        pokemonCarousel("left");
+    });
+
+    rightButton.addEventListener("click", () => {
+        pokemonCarousel("right");
+    });
+
+    descriptionCarousel.appendChild(leftButton);
+    descriptionCarousel.appendChild(rightButton);
+
+    window.addEventListener("resize", () => {
+        transitionPokemonCarousel(activePokemonCarousel);
+    });
+
+    const pokemonContents = document.createElement("div");
+    pokemonContents.id = "pokemon-contents";
+
     pokemonDisplay.appendChild(pokemonName);
     pokemonDisplay.appendChild(pokemonId);
-    pokemonDisplay.appendChild(imageAndStats);
+    
+    pokemonContents.appendChild(imageAndStats);
+    pokemonContents.appendChild(descriptionCarousel);
+
+    pokemonDisplay.appendChild(pokemonContents);
 
     fullscreenContainer.appendChild(pokemonDisplay);
     fullscreenContainer.appendChild(closeButton);
@@ -516,6 +600,55 @@ function closePokemonDisplay() {
         fullscreenContainer.removeChild(child);
     });
 
+}
+
+function pokemonCarousel(direction) {
+    const items = document.getElementsByClassName("description-carousel-item").length;
+    const leftButton = document.getElementById("carousel-left-button");
+    const rightButton = document.getElementById("carousel-right-button");
+
+    if (items < 2) {
+        console.log("Not enough items for a carousel");
+        return;
+    }
+
+    if (direction === "left" && activePokemonCarousel === 0) {
+        console.log("Carousel already too far left");
+        return;
+    } else if (direction === "right" && activePokemonCarousel === items - 1) {
+        console.log("Carousel already too far right");
+        return;
+    }
+
+    if (direction == "left") {
+        activePokemonCarousel--;
+    } else if (direction == "right") {
+        activePokemonCarousel++;
+    }
+
+    if (activePokemonCarousel == 0) {
+        leftButton.style.display = "none";
+    } else {
+        leftButton.style.display = "block";
+    }
+
+    if (activePokemonCarousel == items - 1) {
+        rightButton.style.display = "none";
+    } else {
+        rightButton.style.display = "block";
+    }
+
+    transitionPokemonCarousel(activePokemonCarousel);
+}
+
+function transitionPokemonCarousel(i) {
+    let offset = 0;
+    const items = document.getElementsByClassName("description-carousel-item");
+    const width = items[0].offsetWidth;
+    offset = (i * (width + 33));
+    for (const item of items) {
+        item.style.transform = `translateX(-${offset}px)`;
+    }
 }
 
 // ACCORDIAN IMAGES
@@ -560,18 +693,3 @@ initCarousel();
 carouselExpand(1);
 // Initialize pokedex
 initPokedex();
-
-function handleMouseMove(event) {
-    const width = document.body.clientWidth;
-    const height = document.body.clientHeight;
-    
-    const xAbsolute = event.clientX / width;
-    const yAbsolute = event.clientY / height;
-    
-    const maxOffset = 40;
-    const xOffset = (xAbsolute * (2 * maxOffset)) - maxOffset;
-    const yOffset = (yAbsolute * (2 * maxOffset)) - maxOffset;
-    
-    document.body.style.backgroundPosition = `${xOffset}px ${yOffset}px`;
-  }
-  
